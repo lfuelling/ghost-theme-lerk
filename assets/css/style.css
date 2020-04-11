@@ -104,6 +104,7 @@ body * {
 
 #header ul.taglist li a abbr {
     border: none;
+    cursor: pointer;
 }
 
 #header ul.taglist li a i.fab,
@@ -111,6 +112,7 @@ body * {
 #header ul.taglist li a i.far {
     font-size: 23px;
     vertical-align: sub; /* I have no idea why but this "centers" it vertically */
+    cursor: pointer;
 }
 
 #content {

@@ -6,16 +6,17 @@
 (function ($, sr, undefined) {
     "use strict";
 
-    var $document = $(document),
+    const $document = $(document),
 
         // debouncing function from John Hann
         // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
         debounce = function (func, threshold, execAsap) {
             var timeout;
 
-            return function debounced () {
+            return function debounced() {
                 var obj = this, args = arguments;
-                function delayed () {
+
+                function delayed() {
                     if (!execAsap) {
                         func.apply(obj, args);
                     }
@@ -34,11 +35,11 @@
 
     $document.ready(function () {
 
-        var $postContent = $(".post-content");
+        const $postContent = $(".post-content");
         $postContent.fitVids();
 
         function updateImageWidth() {
-            var $this = $(this),
+            const $this = $(this),
                 contentWidth = $postContent.outerWidth(), // Width of the content
                 imageWidth = this.naturalWidth; // Original image resolution
 
@@ -49,7 +50,8 @@
             }
         }
 
-        var $img = $("img").on('load', updateImageWidth);
+        const $img = $("img").on('load', updateImageWidth);
+
         function casperFullImg() {
             $img.each(updateImageWidth);
         }
@@ -68,16 +70,16 @@
     // https://github.com/PaulAdamDavis/Arctic-Scroll
     $.fn.arctic_scroll = function (options) {
 
-        var defaults = {
-            elem: $(this),
-            speed: 500
-        },
+        const defaults = {
+                elem: $(this),
+                speed: 500
+            },
 
-        allOptions = $.extend(defaults, options);
+            allOptions = $.extend(defaults, options);
 
         allOptions.elem.click(function (event) {
             event.preventDefault();
-            var $this = $(this),
+            let $this = $(this),
                 $htmlBody = $('html, body'),
                 offset = ($this.attr('data-offset')) ? $this.attr('data-offset') : false,
                 position = ($this.attr('data-position')) ? $this.attr('data-position') : false,
