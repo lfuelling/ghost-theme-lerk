@@ -1,0 +1,31 @@
+{{#if excerpt}}
+    <div class="box sidebox about">
+        <div class="sidebox-title">TL;DR</div>
+        <div class="sidebox-content">
+            <p>{{excerpt characters="500"}}</p>
+        </div>
+    </div>
+{{/if}}
+
+{{#if tags}}
+    <div class="box sidebox about">
+        <div class="sidebox-title">Tags</div>
+        <div class="sidebox-content">
+            <p>{{tags}}</p>
+        </div>
+    </div>
+{{/if}}
+
+{{#get "posts" limit=7 as |recents|}}
+    <div class="box sidebox latest-articles">
+        <div class="sidebox-title">Latest Articles</div>
+        <div class="sidebox-content loading">
+            {{#foreach recents}}
+                <a href="{{url}}">
+                    <div class="date">{{date format="DD MMMM YYYY"}}</div>
+                    <div>{{title}}</div>
+                </a>
+            {{/foreach}}
+        </div>
+    </div>
+{{/get}}

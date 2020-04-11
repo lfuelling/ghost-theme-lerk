@@ -1,0 +1,17 @@
+{{#if isSecondary}}
+    <ul id="taglist-secondary" class="taglist secondary"> <!-- TODO: place secondary nav at the footer! -->
+        {{#foreach navigation}}
+            <li class="nav-{{slug}}{{#if current}} nav-current{{/if}}" role="presentation">
+                <a href="{{url absolute="true"}}">{{label}}</a>
+            </li>
+        {{/foreach}}
+    </ul>
+{{else}}
+    <ul id="taglist-primary" class="taglist">
+        {{#foreach navigation}}
+            <li class="nav-{{slug}}{{#if current}} nav-current{{/if}}" role="presentation">
+                <a href="{{url absolute="true"}}">{{label}}</a>
+            </li>
+        {{/foreach}}
+    </ul>
+{{/if}}
