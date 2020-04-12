@@ -1,4 +1,20 @@
 {
-  "name": "lerk",
-  "version": "1.0.1"
+  "name": "ghost-theme-lerk",
+  "description": "Ghost theme for lerks.blog.",
+  "version": "1.0.2",
+  "keywords": [
+    "ghost-theme",
+    "blog"
+  ],
+  "config": {
+    "posts_per_page": 7
+  },
+  "engines": {
+    "ghost-api": "v3"
+  },
+  "license": "WTFPL",
+  "author": {
+    "email": "lukas@k40s.net",
+    "name": "Lerk"
+  }
 }

@@ -11,10 +11,10 @@
         // debouncing function from John Hann
         // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
         debounce = function (func, threshold, execAsap) {
-            var timeout;
+            let timeout;
 
             return function debounced() {
-                var obj = this, args = arguments;
+                const obj = this, args = arguments;
 
                 function delayed() {
                     if (!execAsap) {
@@ -97,4 +97,15 @@
         });
 
     };
+
+    // image gallery
+    const images = document.querySelectorAll('.kg-gallery-image img');
+    images.forEach(function (image) {
+        const container = image.closest('.kg-gallery-image');
+        const width = image.attributes.width.value;
+        const height = image.attributes.height.value;
+        const ratio = width / height;
+        container.style.flex = ratio + ' 1 0%';
+    });
+
 })(jQuery, 'smartresize');

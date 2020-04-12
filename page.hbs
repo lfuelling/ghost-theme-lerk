@@ -5,18 +5,17 @@
 
 {{! Everything inside the #post tags pulls data from the post }}
 {{#post}}
-    <link rel="stylesheet" href="/assets/css/prism.css">
-    <script src="/assets/js/prism.min.js"></script>
+    <link rel="stylesheet" href="{{asset "css/prism.css"}}">
+    <script src="{{asset "js/prism.min.js"}}"></script>
 
     {{> "header"}}
-
 
     <main id="content" class="content" role="main">
 
         <div id="article" class="box page {{#if feature_image}}has-image{{/if}}">
             {{#if feature_image}}
                 <div class="image-wrapper">
-                    <img src="{{img_url feature_image}}" class="post-image"/>
+                    <img alt="{{excerpt}}" src="{{img_url feature_image}}" class="post-image"/>
                 </div>
             {{/if}}
 
