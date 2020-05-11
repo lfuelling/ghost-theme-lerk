@@ -74,6 +74,12 @@ body * {
     float: right;
 }
 
+@media all and (max-width: 700px) {
+    #header ul.taglist.secondary {
+        display: none;
+    }
+}
+
 #header ul.taglist li {
     margin: 0;
     padding: .2em 1.5em;
@@ -117,13 +123,19 @@ body * {
 
 #content {
     width: 100%;
-    max-width: 1250px;
+    max-width: 95%;
     margin: 0 auto;
     padding: 1em;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -o-box-sizing: border-box;
+}
+
+@media screen and (max-width: 1500px) {
+    #content {
+        max-width: 1500px;
+    }
 }
 
 #articles, #article:not(.page) {
