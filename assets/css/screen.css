@@ -394,6 +394,7 @@ pre, code {
     line-height: 1;
     font-size: 1em;
     display: inline-block;
+    overflow: scroll;
 }
 
 pre {
