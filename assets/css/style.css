@@ -268,6 +268,28 @@ body * {
     margin: 0;
 }
 
+.sidebox.share .sidebox-content {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.sidebox.share a {
+    font-size: 2.5rem;
+    display: inline-block;
+    margin: 1rem 1.6rem 1.6rem 0;
+    color: #BBC7CC;
+    text-decoration: none;
+}
+
+.sidebox.share a:hover {
+    color: #50585D;
+}
+
+.sidebox.share .sidebox-content {
+    text-align: center;
+}
+
 .social-item {
     width: 25%;
     float: left;
