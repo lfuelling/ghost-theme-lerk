@@ -3165,9 +3165,9 @@
         resultsData			: false,
         onPageLoad			: false,
         onKeyUp				: false,
-        result_template 	: "<a id='gh-{{ref}}' class='gh-search-item' href='{{link}}'><p><h2>{{title}}</h2><h4>{{prettyPubDate}}</h4></p></a>",
-        info_template		: "<p>Number of posts found: {{amount}}</p>",
-        displaySearchInfo	: true,
+        result_template 	: "<li class='gh-search-item' id='gh-{{ref}}'><a href='{{link}}'><h6>{{title}}</h6><p class='date'>{{pubDate}}</p></a></li>",
+        info_template		: "<li id='search-info'><p>{{amount}} posts found!</p></li>",
+        displaySearchInfo	: false,
         zeroResultsInfo		: true,
         before				: false,
         onComplete			: false,
@@ -3229,8 +3229,8 @@
         // console.log('ghostHunter: grabAndIndex');
         this.blogData = {};
         this.latestPost = 0;
-        var ghost_root = ghost_root_url || "/ghost/api/v2";
-        var url = ghost_root + "/content/posts/?key=" + ghosthunter_key + "&limit=all&include=tags";
+        var ghost_root = "/ghost/api/v2";
+        var url = ghost_root + "/content/posts/?key=" + search_key + "&limit=all&include=tags";
 
         var params = {
             limit: "all",
@@ -3387,8 +3387,8 @@
                     filter: "updated_at:>\'" + this.latestPost.replace(/\..*/, "").replace(/T/, " ") + "\'",
                     fields: "id"
                 };
-                var ghost_root = ghost_root_url || "/ghost/api/v2";
-                var url = ghost_root + "/content/posts/?key=" + ghosthunter_key + "&limit=all&fields=id" + "&filter=" + "updated_at:>\'" + this.latestPost.replace(/\..*/, "").replace(/T/, " ") + "\'";
+                var ghost_root = "/ghost/api/v2";
+                var url = ghost_root + "/content/posts/?key=" + search_key + "&limit=all&fields=id" + "&filter=" + "updated_at:>\'" + this.latestPost.replace(/\..*/, "").replace(/T/, " ") + "\'";
 
                 var me = this;
                 $.get(url).done(function(data){
@@ -3482,7 +3482,7 @@
                 var resultsData 	= [];
                 if (searchResult.length === 0) {
                     results.empty();
-                    if (this.displaySearchInfo && this.zeroResultsInfo) {
+                    if (this.zeroResultsInfo) {
                         results.append(this.format(this.info_template,{"amount":0}));
                     }
                 } else if (this.displaySearchInfo) {
@@ -3491,6 +3491,8 @@
                     } else {
                         results.append(this.format(this.info_template,{"amount":searchResult.length}));
                     }
+                } else if(!this.displaySearchInfo && this.zeroResultsInfo) {
+                    $('li#search-info').remove();
                 }
 
                 if(this.before) {

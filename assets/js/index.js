@@ -1,7 +1,3 @@
-/**
- * Main JS file for Casper behaviours
- */
-
 /* globals jQuery, document */
 (function ($, sr, undefined) {
     "use strict";
@@ -106,6 +102,17 @@
         const height = image.attributes.height.value;
         const ratio = width / height;
         container.style.flex = ratio + ' 1 0%';
+    });
+
+    $("#search-field").ghostHunter({
+        results: "#results",
+        onComplete: function(results) {
+            $('#search-results-wrapper').addClass('active');
+        }
+    });
+
+    $('button#search-close').on('click', function (e) {
+        $('#search-results-wrapper').removeClass('active');
     });
 
 })(jQuery, 'smartresize');

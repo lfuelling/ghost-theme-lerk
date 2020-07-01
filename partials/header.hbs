@@ -2,7 +2,23 @@
 <header id="header">
     <nav class="header-nav" {{#if @site.cover_image}}style="background-image:url({{@site.cover_image}}){{/if}}">
 
-        <div class="blog-title"><a href="{{@site.url}}">{{@site.title}}<small>&nbsp;{{@site.description}}</small></a></div>
+        <div class="blog-header">
+            <div class="blog-title">
+                <a href="{{@site.url}}">{{@site.title}}<small>&nbsp;{{@site.description}}</small></a>
+            </div>
+
+            <form id="search-form">
+                <div>
+                    <input type="text" aria-label="search term" id="search-field"/>
+                    <input type="submit" value="search">
+                </div>
+            </form>
+        </div>
+
+        <div id="search-results-wrapper">
+            <button id="search-close" aria-label="close results"><i class="far fa-times-circle"></i></button>
+            <ul id="results" aria-label="search results"></ul>
+        </div>
 
         <!--Change this to customize the navigation-->
         <div class="taglist-wrapper clearfix">
