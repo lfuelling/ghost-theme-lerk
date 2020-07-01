@@ -3176,7 +3176,7 @@
         item_preprocessor	: false,
         indexing_start		: false,
         indexing_end		: false,
-        includebodysearch	: false
+        includebodysearch	: true
     };
     var prettyDate = function(date) {
         var d = new Date(date);
