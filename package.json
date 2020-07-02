@@ -17,6 +17,9 @@
     "email": "lukas@k40s.net",
     "name": "Lerk"
   },
+  "repository": {
+    "url": "https://github.com/lfuelling/ghost-theme-lerk"
+  },
   "devDependencies": {
     "del": "^5.1.0",
     "gulp": "^4.0.2",
