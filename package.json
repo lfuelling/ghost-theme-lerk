@@ -1,7 +1,7 @@
 {
   "name": "ghost-theme-lerk",
   "description": "Ghost theme for lerks.blog.",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "keywords": [
     "ghost-theme",
     "blog"
@@ -16,5 +16,14 @@
   "author": {
     "email": "lukas@k40s.net",
     "name": "Lerk"
+  },
+  "devDependencies": {
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-minify": "^3.1.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-zip": "^5.0.2",
+    "sass": "^1.26.9"
   }
 }
