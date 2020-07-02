@@ -5,7 +5,7 @@ A [ghost](https://ghost.org/) theme based on [ghost-wbkd](https://github.com/wbk
 
 1. Clone the repo
 2. Install dependencies: `npm install`
-3. Build theme: `npx gulp build package`
+3. Build theme: `npx gulp build`
 4. Upload the `ghost-theme-lerk.zip` file to your blog
 
 #### Nav Links
