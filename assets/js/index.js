@@ -1,3 +1,5 @@
+import './include/search.js'
+
 /* globals jQuery, document */
 (function ($, sr, undefined) {
     "use strict";
