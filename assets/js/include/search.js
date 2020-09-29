@@ -1,389 +1,300 @@
 /**
  * ghostHunter - 0.6.0
  * Copyright (C) 2014 Jamal Neufeld (jamal@i11u.me)
- * MIT Licensed
- * @license
+ * @license MIT
  */
-(function( $ ) {
-
-    import './lunr.js';
-
-    // Adapted from https://github.com/pseudonym117/Levenshtein
-    (function(root, factory){
-        if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
-            define(function(){
-                return factory(root);
-            });
-        } else if (typeof module == 'object' && module && module.exports) {
-            module.exports = factory(root);
-        } else {
-            root.Levenshtein = factory(root);
-        }
-    }(this, function(root){
-
-        function forEach( array, fn ) { var i, length
-            i = -1
-            length = array.length
-            while ( ++i < length )
-                fn( array[ i ], i, array )
-        }
-
-        function map( array, fn ) { var result
-            result = Array( array.length )
-            forEach( array, function ( val, i, array ) {
-                result.push( fn( val, i, array ) )
-            })
-            return result
-        }
-
-        function reduce( array, fn, accumulator ) {
-            forEach( array, function( val, i, array ) {
-                accumulator = fn( val, i, array )
-            })
-            return accumulator
-        }
-
-        // For string mode
-        function getChar(str, idx) {
-            return str.charAt(idx);
-        }
-
-        // For array mode
-        function getArrayMember(arr, idx) {
-            return arr[idx];
-        }
-
-        // Levenshtein distance
-        function Levenshtein( str_m, str_n ) {
-            var previous, current, matrix, getElem
-            // Set to string or array mode
-            if (typeof str_m === "string" && typeof str_n === "string") {
-                getElem = getChar;
-            } else if (typeof str_m === "object" && typeof str_n === "object") {
-                getElem = getArrayMember;
-            } else {
-                throw "Levensthtein: input must be two strings or two arrays"
-            }
-            // Constructor
-            matrix = this._matrix = []
-
-            // Sanity checks
-            if ( str_m == str_n )
-                return this.distance = 0
-            else if ( str_m == '' )
-                return this.distance = str_n.length
-            else if ( str_n == '' )
-                return this.distance = str_m.length
-            else {
-                // Danger Will Robinson
-                previous = [ 0 ]
-                forEach( str_m, function( v, i ) { i++, previous[ i ] = i } )
-
-                matrix[0] = previous
-                forEach( str_n, function( n_val, n_idx ) {
-                    current = [ ++n_idx ]
-                    forEach( str_m, function( m_val, m_idx ) {
-                        m_idx++
-                        if ( getElem(str_m, m_idx - 1) == getElem(str_n, n_idx - 1) )
-                            current[ m_idx ] = previous[ m_idx - 1 ]
-                        else
-                            current[ m_idx ] = Math.min
-                            ( previous[ m_idx ] + 1        // Deletion
-                                , current[ m_idx - 1 ] + 1     // Insertion
-                                , previous[ m_idx - 1 ] + 1    // Subtraction
-                            )
-                    })
-                    previous = current
-                    matrix[ matrix.length ] = previous
-                })
-
-                return this.distance = current[ current.length - 1 ]
-            }
-        }
-
-        Levenshtein.prototype.toString = Levenshtein.prototype.inspect = function inspect ( no_print ) { var matrix, max, buff, sep, rows
-            matrix = this.getMatrix()
-            max = reduce( matrix,function( m, o ) {
-                return Math.max( m, reduce( o, Math.max, 0 ) )
-            }, 0 )
-            buff = Array( ( max + '' ).length ).join( ' ' )
-
-            sep = []
-            while ( sep.length < (matrix[0] && matrix[0].length || 0) )
-                sep[ sep.length ] = Array( buff.length + 1 ).join( '-' )
-            sep = sep.join( '-+' ) + '-'
-
-            rows = map( matrix, function( row ) { var cells
-                cells = map( row, function( cell ) {
-                    return ( buff + cell ).slice( - buff.length )
-                })
-                return cells.join( ' |' ) + ' '
-            })
-
-            return rows.join( "\n" + sep + "\n" )
-        }
-
-        // steps to get from string 1 to string 2
-        Levenshtein.prototype.getSteps = function()     {
-            var steps, matrix, x, y, u, l, d, min
-            steps = []
-            matrix = this.getMatrix()
-            x = matrix.length - 1
-            y = matrix[0].length - 1
-            while(x !== 0 || y !== 0)     {
-                u = y > 0 ? matrix[x][y-1] : Number.MAX_VALUE
-                l = x > 0 ? matrix[x-1][y] : Number.MAX_VALUE
-                d = y > 0 && x > 0 ? matrix[x-1][y-1] : Number.MAX_VALUE
-                min = Math.min(u, l, d)
-                if(min === d) {
-                    if(d < matrix[x][y]) {
-                        steps.push(['substitute', y, x])
-                    }//  else steps.push(['no-op', y, x])
-                    x--
-                    y--
-                } else if(min === l) {
-                    steps.push(['insert', y, x])
-                    x--
-                } else {
-                    steps.push(['delete', y, x])
-                    y--
-                }
-            }
-            return steps
-        }
-
-        Levenshtein.prototype.getMatrix = function () {
-            return this._matrix.slice()
-        }
-
-        Levenshtein.prototype.valueOf = function() {
-            return this.distance
-        }
-
-        return Levenshtein
-
-    }));
-
-
-    //This is the main plugin definition
-    $.fn.ghostHunter 	= function( options ) {
-
+(function () {
+    /**
+     * Main plugin function.
+     * @param searchField {HTMLInputElement} the target search field. This has to be inside a form.
+     * @param results {HTMLElement} the div to render the results into.
+     * @param options plugin configuration (see defaults below)
+     * @returns {GhostHunterFunctions}
+     */
+    window.ghostHunter = function (searchField, results, options) {
         //Here we use jQuery's extend to set default values if they weren't set by the user
-        var opts 		= $.extend( {}, $.fn.ghostHunter.defaults, options );
-        if( opts.results )
-        {
-            pluginMethods.init( this , opts );
-            return pluginMethods;
+        const opts = Object.assign(window.ghostHunter.defaults, options);
+        if (opts.results) {
+            ghostHunterFunctions.init(searchField, results, opts);
+            return ghostHunterFunctions;
         }
     };
-    // If the Ghost instance is in a subpath of the site, set subpath
-    // as the path to the site with a leading slash and no trailing slash
-    // (i.e. "/path/to/instance").
-    $.fn.ghostHunter.defaults = {
-        resultsData			: false,
-        onPageLoad			: false,
-        onKeyUp				: false,
-        result_template 	: "<li class='gh-search-item' id='gh-{{ref}}'><a href='{{link}}'><h6>{{title}}</h6><p class='date'>{{pubDate}}</p></a></li>",
-        info_template		: "<li id='search-info'><p>{{amount}} posts found!</p></li>",
-        displaySearchInfo	: false,
-        zeroResultsInfo		: true,
-        before				: false,
-        onComplete			: false,
-        filterfields		: false,
-        subpath				: "",
-        item_preprocessor	: false,
-        indexing_start		: false,
-        indexing_end		: false,
-        includebodysearch	: true
+
+    /**
+     * GhostHunter options.
+     * @typedef {Object} GhostHunterOptions
+     *
+     * @property {string} result_template - The (Handlebars?) template to use for a single result
+     * @property {string} info_template - The (Handlebars?) template to use for search info
+     * @property {string} subpath - If the Ghost instance is in a subpath of the site, set subpath as the path to the site with a leading slash and no trailing slash (i.e. "/path/to/instance").
+     * @property {boolean} resultsData - No idea
+     * @property {boolean} onPageLoad - Something with page load
+     * @property {boolean} onKeyUp - Enable or disable "search as you type"
+     * @property {boolean} displaySearchInfo - Enable or disable the search info
+     * @property {boolean} zeroResultsInfo - Enable or disable the search info when there are no results
+     * @property {boolean} includebodysearch - Toggle if the full post body should be searched
+     * @property {function} before - Not really sure what it's supposed to do yet
+     * @property {function} onComplete - Callback for search completion
+     * @property {function} item_preprocessor - Callback for implementing a metadata preprocessor
+     * @property {function} indexing_start - Callback for implementing something when indexing starts
+     * @property {function} indexing_end - Callback for implementing something when indexing ends
+     */
+
+    /**
+     * Default settings.
+     * @type {GhostHunterOptions}
+     */
+    window.ghostHunter.defaults = {
+        resultsData: false,
+        onPageLoad: false,
+        onKeyUp: false,
+        result_template: "<li class='gh-search-item' id='gh-{{ref}}'><a href='{{link}}'><h6>{{title}}</h6><p class='date'>{{pubDate}}</p></a></li>",
+        info_template: "<li id='search-info'><p>{{amount}} posts found!</p></li>",
+        displaySearchInfo: false,
+        zeroResultsInfo: true,
+        before: undefined,
+        onComplete: undefined,
+        subpath: "",
+        item_preprocessor: undefined,
+        indexing_start: false,
+        indexing_end: false,
+        includebodysearch: true
     };
-    var prettyDate = function(date) {
-        var d = new Date(date);
-        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const prettyDate = function (date) {
+        const d = new Date(date);
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         return d.getDate() + ' ' + monthNames[d.getMonth()] + ' ' + d.getFullYear();
     };
 
-    var getSubpathKey = function(str) {
+    const getSubpathKey = function (str) {
         return str.replace(/^\//, "").replace(/\//g, "-")
     };
 
-    var lastTimeoutID = null;
+    let lastTimeoutID = null;
 
     // We add a prefix to new IDs and remove it after a set of
     // updates is complete, just in case a browser freaks over
     // duplicate IDs in the DOM.
-    var settleIDs = function() {
-        $('.gh-search-item').each(function(){
-            var oldAttr = this.getAttribute('id');
-            var newAttr = oldAttr.replace(/^new-/, "");
+    const settleIDs = function () {
+        const items = document.getElementsByClassName('gh-search-item');
+        for (let i = 0; i < items.length; i++) {
+            const oldAttr = this.getAttribute('id');
+            const newAttr = oldAttr.replace(/^new-/, "");
             this.setAttribute('id', newAttr);
-        });
+        }
     };
-    var updateSearchList = function(listItems, apiData, steps) {
-        for (var i=0,ilen=steps.length;i<ilen;i++) {
-            var step = steps[i];
-            if (step[0] == "delete") {
-                listItems.eq(step[1]-1).remove();
+
+    /**
+     * Update method for some list, TODO: write better docs
+     * @param listItems {HTMLCollectionOf<HTMLElement>} the list items
+     * @param apiData
+     * @param steps
+     */
+    const updateSearchList = function (listItems, apiData, steps) {
+        for (let i = 0, ilen = steps.length; i < ilen; i++) {
+            const step = steps[i];
+            if (step[0] === "delete") {
+                listItems.item(step[1] - 1).remove()
             } else {
-                var lunrref = apiData[step[2]-1].ref;
-                var postData = this.blogData[lunrref];
-                var html = this.format(this.result_template,postData);
+                const lunrref = apiData[step[2] - 1].ref;
+                const postData = this.blogData[lunrref];
+                const html = this.format(this.result_template, postData);
                 if (step[0] === "substitute") {
-                    listItems.eq(step[1]-1).replaceWith(html);
+                    listItems.item(step[1] - 1).replaceWith(html);
                 } else if (step[0] === "insert") {
-                    var pos;
+                    let pos;
                     if (step[1] === 0) {
                         pos = null;
                     } else {
-                        pos = (step[1]-1)
+                        pos = (step[1] - 1)
                     }
-                    listItems.eq(pos).after(html);
+                    listItems.item(pos).after(html);
                 }
             }
         }
         settleIDs();
     }
 
-    var grabAndIndex = function(){
-        // console.log('ghostHunter: grabAndIndex');
+    /**
+     * Dunno what it do. But at least it don't go down.
+     */
+    const grabAndIndex = function () {
         this.blogData = {};
         this.latestPost = 0;
-        var ghost_root = "/ghost/api/v2";
-        var url = ghost_root + "/content/posts/?key=" + search_key + "&limit=all&include=tags";
+        const ghost_root = "/ghost/api/v2";
+        // noinspection JSUnresolvedVariable search_key has to be injected using the Ghost admin panel for security reasons.
+        let url = ghost_root + "/content/posts/?key=" + search_key + "&limit=all&include=tags";
 
-        var params = {
+        const params = {
             limit: "all",
             include: "tags",
         };
-        if ( this.includebodysearch ){
-            params.formats=["plaintext"]
+        if (this.includebodysearch) {
+            params.formats = ["plaintext"]
             url += "&formats=plaintext"
         } else {
-            params.formats=[""]
+            params.formats = [""]
         }
-        var me = this;
-        $.get(url).done(function(data){
-            var idxSrc = data.posts;
-            // console.log("ghostHunter: indexing all posts")
-            me.index = lunr(function () {
-                this.ref('id');
-                this.field('title');
-                this.field('description');
-                if (me.includebodysearch){
-                    this.field('plaintext');
+        const me = this;
+
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    if (!data.posts) {
+                        console.error("No posts received!");
+                    } else {
+                        const idxSrc = data.posts;
+                        me.index = lunr(function () {
+                            this.ref('id');
+                            this.field('title');
+                            this.field('description');
+                            if (me.includebodysearch) {
+                                this.field('plaintext');
+                            }
+                            this.field('pubDate');
+                            this.field('tag');
+                            idxSrc.forEach(function (arrayItem) {
+                                // console.log("start indexing an item: " + arrayItem.id);
+                                // Track the latest value of updated_at,  to stash in localStorage
+                                const itemDate = new Date(arrayItem.updated_at).getTime();
+                                const recordedDate = new Date(me.latestPost).getTime();
+                                if (itemDate > recordedDate) {
+                                    me.latestPost = arrayItem.updated_at;
+                                }
+                                const tag_arr = arrayItem.tags.map(function (v) {
+                                    return v.name; // `tag` object has an `name` property which is the value of tag. If you also want other info, check API and get that property
+                                })
+                                if (arrayItem.meta_description == null) {
+                                    arrayItem.meta_description = ''
+                                }
+                                let category = tag_arr.join(", ");
+                                if (category.length < 1) {
+                                    category = "undefined";
+                                }
+                                const parsedData = {
+                                    id: String(arrayItem.id),
+                                    title: String(arrayItem.title),
+                                    description: String(arrayItem.custom_excerpt),
+                                    pubDate: String(arrayItem.published_at),
+                                    tag: category
+                                }
+                                if (me.includebodysearch) {
+                                    parsedData.plaintext = String(arrayItem.plaintext);
+                                }
+                                this.add(parsedData)
+                                const localUrl = me.subpath + arrayItem.url
+                                me.blogData[arrayItem.id] = {
+                                    title: arrayItem.title,
+                                    description: arrayItem.custom_excerpt,
+                                    pubDate: prettyDate(parsedData.pubDate),
+                                    link: localUrl,
+                                    tags: tag_arr
+                                };
+                                // If there is a metadata "pre"-processor for the item, run it here.
+                                if (me.item_preprocessor) {
+                                    Object.assign(me.blogData[arrayItem.id], me.item_preprocessor(arrayItem));
+                                }
+                                // console.log("done indexing the item");
+                            }, this);
+                        });
+                        try {
+                            const subpathKey = getSubpathKey(me.subpath);
+                            localStorage.setItem(("ghost_" + subpathKey + "_lunrIndex"), JSON.stringify(me.index));
+                            localStorage.setItem(("ghost_" + subpathKey + "_blogData"), JSON.stringify(me.blogData));
+                            localStorage.setItem(("ghost_" + subpathKey + "_latestPost"), me.latestPost);
+                        } catch (e) {
+                            console.warn("ghostHunter: save to localStorage failed: " + e);
+                        }
+                        if (me.indexing_end) {
+                            me.indexing_end();
+                        }
+                        me.isInit = true;
+                    }
+                } else {
+                    console.error("Error executing request: " + xhr.status + "!")
                 }
-                this.field('pubDate');
-                this.field('tag');
-                idxSrc.forEach(function (arrayItem) {
-                    // console.log("start indexing an item: " + arrayItem.id);
-                    // Track the latest value of updated_at,  to stash in localStorage
-                    var itemDate = new Date(arrayItem.updated_at).getTime();
-                    var recordedDate = new Date(me.latestPost).getTime();
-                    if (itemDate > recordedDate) {
-                        me.latestPost = arrayItem.updated_at;
-                    }
-                    var tag_arr = arrayItem.tags.map(function(v) {
-                        return v.name; // `tag` object has an `name` property which is the value of tag. If you also want other info, check API and get that property
-                    })
-                    if(arrayItem.meta_description == null) { arrayItem.meta_description = '' };
-                    var category = tag_arr.join(", ");
-                    if (category.length < 1){
-                        category = "undefined";
-                    }
-                    var parsedData 	= {
-                        id 			: String(arrayItem.id),
-                        title 		: String(arrayItem.title),
-                        description	: String(arrayItem.custom_excerpt),
-                        pubDate 	: String(arrayItem.published_at),
-                        tag 		: category
-                    }
-                    if  ( me.includebodysearch ){
-                        parsedData.plaintext=String(arrayItem.plaintext);
-                    }
-                    this.add(parsedData)
-                    var localUrl = me.subpath + arrayItem.url
-                    me.blogData[arrayItem.id] = {
-                        title: arrayItem.title,
-                        description: arrayItem.custom_excerpt,
-                        pubDate: prettyDate(parsedData.pubDate),
-                        link: localUrl,
-                        tags: tag_arr
-                    };
-                    // If there is a metadata "pre"-processor for the item, run it here.
-                    if (me.item_preprocessor) {
-                        Object.assign(me.blogData[arrayItem.id], me.item_preprocessor(arrayItem));
-                    }
-                    // console.log("done indexing the item");
-                }, this);
-            });
-            try {
-                var subpathKey = getSubpathKey(me.subpath);
-                localStorage.setItem(("ghost_" + subpathKey + "_lunrIndex"), JSON.stringify(me.index));
-                localStorage.setItem(("ghost_" + subpathKey + "_blogData"), JSON.stringify(me.blogData));
-                localStorage.setItem(("ghost_" + subpathKey + "_latestPost"), me.latestPost);
-            } catch (e) {
-                console.warn("ghostHunter: save to localStorage failed: " + e);
             }
-            if (me.indexing_end) {
-                me.indexing_end();
-            }
-            me.isInit = true;
-        });
+        }
+        xhr.open('GET', url, true);
+        xhr.send(null);
     }
 
-    var pluginMethods	= {
+    /**
+     * Main plugin functions.
+     * @typedef {Object} GhostHunterFunctions
+     * @property {boolean} isInit - is init? No idea what it means yet
+     * @property {function} init - Plugin init function.
+     * @property {function} loadAPI - Plugin API fetch function.
+     * @property {function} find - Plugin search function.
+     * @property {function} clear - Plugin clear function.
+     * @property {function} format - Plugin format function.
+     */
 
-        isInit			: false,
+    /**
+     * Main plugin functions. Or something like that...
+     * @type {GhostHunterFunctions}
+     */
+    const ghostHunterFunctions = {
 
-        init			: function( target , opts ){
-            var that = this;
+        isInit: false,
+
+        /**
+         * Init function.
+         * @param target {HTMLInputElement} search field
+         * @param result {HTMLElement} the div to render the results into
+         * @param opts {GhostHunterOptions} options
+         */
+        init: function (target, result, opts) {
+            const that = this;
             that.target = target;
+            this.results = result
             Object.assign(this, opts);
-            // console.log("ghostHunter: init");
-            if ( opts.onPageLoad ) {
-                function miam () {
+            if (opts.onPageLoad) {
+                function miam() {
                     that.loadAPI();
                 }
+
                 window.setTimeout(miam, 1);
             } else {
-                target.focus(function(){
+                target.focus(function () {
                     that.loadAPI();
                 });
             }
 
-            target.closest("form").submit(function(e){
+            target.form.addEventListener('submit', function (e) {
                 e.preventDefault();
-                that.find(target.val());
+                that.find(target.value);
             });
 
-            if( opts.onKeyUp ) {
+            if (opts.onKeyUp) {
                 // In search-as-you-type mode, the Enter key is meaningless,
                 // so we disable it in the search field. If enabled, some browsers
                 // will save data to history (even when autocomplete="false"), which
                 // is an intrusive headache, particularly on mobile.
-                target.keydown(function(event){
+                target.addEventListener('keydown', function (event) {
                     if (event.which === 13) {
                         return false;
                     }
                 });
-                target.keyup(function(event) {
-                    that.find(target.val());
+                target.addEventListener('keyup', function (event) {
+                    that.find(target.value);
                 });
-
             }
 
         },
 
-        loadAPI			: function(){
-            // console.log('ghostHunter: loadAPI');
-            if(!this.isInit) {
-                // console.log('ghostHunter: this.isInit is true');
+        loadAPI: function () {
+            if (!this.isInit) {
                 if (this.indexing_start) {
                     this.indexing_start();
                 }
                 // If isInit is falsy, check for data in localStore,
                 // parse into memory, and declare isInit to be true.
                 try {
-                    var subpathKey = getSubpathKey(this.subpath);
+                    const subpathKey = getSubpathKey(this.subpath);
                     this.index = localStorage.getItem(("ghost_" + subpathKey + "_lunrIndex"));
                     this.blogData = localStorage.getItem(("ghost_" + subpathKey + "_blogData"));
                     this.latestPost = localStorage.getItem(("ghost_" + subpathKey + "_latestPost"));
@@ -393,53 +304,61 @@
                         this.blogData = JSON.parse(this.blogData);
                         this.isInit = true;
                     }
-                } catch (e){
+                } catch (e) {
                     console.warn("ghostHunter: retrieve from localStorage failed: " + e);
                 }
             }
             if (this.isInit) {
-                // console.log('ghostHunter: this.isInit recheck is true');
-                // Check if there are new or edited posts
-                var params = {
-                    limit: "all",
-                    filter: "updated_at:>\'" + this.latestPost.replace(/\..*/, "").replace(/T/, " ") + "\'",
-                    fields: "id"
-                };
-                var ghost_root = "/ghost/api/v2";
-                var url = ghost_root + "/content/posts/?key=" + search_key + "&limit=all&fields=id" + "&filter=" + "updated_at:>\'" + this.latestPost.replace(/\..*/, "").replace(/T/, " ") + "\'";
+                const ghost_root = "/ghost/api/v2";
+                // noinspection JSUnresolvedVariable search_key has to be injected using the Ghost admin panel for security reasons.
+                const url = ghost_root + "/content/posts/?key=" + search_key + "&limit=all&fields=id" + "&filter=" + "updated_at:>\'" + this.latestPost.replace(/\..*/, "").replace(/T/, " ") + "\'";
 
-                var me = this;
-                $.get(url).done(function(data){
-                    if (data.posts.length > 0) {
-                        grabAndIndex.call(me);
-                    } else {
-                        if (me.indexing_end) {
-                            me.indexing_end();
+                const me = this;
+
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const data = JSON.parse(xhr.responseText);
+                            if (!data.posts) {
+                                console.error("No posts received!");
+                            } else {
+                                if (data.posts.length > 0) {
+                                    grabAndIndex.call(me);
+                                } else {
+                                    if (me.indexing_end) {
+                                        me.indexing_end();
+                                    }
+                                    me.isInit = true;
+                                }
+                            }
+                        } else {
+                            console.error("Unable to do request: " + xhr.status + "!")
                         }
-                        me.isInit = true;
                     }
-                });
+                }
+                xhr.open('GET', url, true);
+                xhr.send(null);
             } else {
                 // console.log('ghostHunter: this.isInit recheck is false');
                 grabAndIndex.call(this)
             }
         },
 
-
-        find 		 	: function(value){
+        find: function (value) {
             clearTimeout(lastTimeoutID);
             if (!value) {
                 value = "";
-            };
+            }
             value = value.toLowerCase();
-            lastTimeoutID = setTimeout(function() {
+            lastTimeoutID = setTimeout(function () {
                 // Query strategy is lifted from comments on a lunr.js issue: https://github.com/olivernn/lunr.js/issues/256
-                var thingsFound = [];
+                let thingsFound = [];
                 // The query interface expects single terms, so we split.
-                var valueSplit = value.split(/\s+/);
-                for (var i=0,ilen=valueSplit.length;i<ilen;i++) {
+                const valueSplit = value.split(/\s+/);
+                for (let i = 0, ilen = valueSplit.length; i < ilen; i++) {
                     // Fetch a list of matches for each term.
-                    var v = valueSplit[i];
+                    const v = valueSplit[i];
                     if (!v) continue;
                     thingsFound.push(this.index.query(function (q) {
                         // For an explanation of lunr indexing options, see the lunr.js
@@ -464,7 +383,7 @@
                         });
                     }));
                 }
-                var searchResult;
+                let searchResult;
                 if (thingsFound.length > 1) {
                     // If we had multiple terms, we'll have multiple lists. We filter
                     // them here to use only items that produce returns for all
@@ -473,17 +392,17 @@
                     // By using the first list of items as master, we get weightings
                     // based on the first term entered, which is more or less
                     // what we would expect.
-                    var searchResult = thingsFound[0];
+                    searchResult = thingsFound[0];
                     thingsFound = thingsFound.slice(1);
-                    for (var i=searchResult.length-1;i>-1;i--) {
-                        var ref = searchResult[i].ref;
-                        for (j=0,jlen=thingsFound.length;j<jlen;j++) {
-                            var otherRefs = {}
-                            for (var k=0,klen=thingsFound[j].length;k<klen;k++) {
+                    for (let i = searchResult.length - 1; i > -1; i--) {
+                        const ref = searchResult[i].ref;
+                        for (let j = 0, jlen = thingsFound.length; j < jlen; j++) {
+                            const otherRefs = {}
+                            for (let k = 0, klen = thingsFound[j].length; k < klen; k++) {
                                 otherRefs[thingsFound[j][k].ref] = true;
                             }
                             if (!otherRefs[ref]) {
-                                searchResult = searchResult.slice(0, i).concat(searchResult.slice(i+1));
+                                searchResult = searchResult.slice(0, i).concat(searchResult.slice(i + 1));
                                 break;
                             }
                         }
@@ -496,31 +415,33 @@
                     searchResult = [];
                 }
 
-                var results 		= $(this.results);
-                var resultsData 	= [];
+                const results = this.results;
+                const resultsData = [];
                 if (searchResult.length === 0) {
-                    results.empty();
+                    while (results.firstChild) {
+                        results.removeChild(results.firstChild);
+                    }
                     if (this.zeroResultsInfo) {
-                        results.append(this.format(this.info_template,{"amount":0}));
+                        results.appendChild(this.format(this.info_template, {"amount": 0}));
                     }
                 } else if (this.displaySearchInfo) {
-                    if (results.length > 0) {
-                        results.children().eq(0).replaceWith(this.format(this.info_template,{"amount":searchResult.length}));
+                    if (results.childElementCount > 0) {
+                        results.childNodes.item(0).replaceWith(this.format(this.info_template, {"amount": searchResult.length}));
                     } else {
-                        results.append(this.format(this.info_template,{"amount":searchResult.length}));
+                        results.appendChild(this.format(this.info_template, {"amount": searchResult.length}));
                     }
-                } else if(!this.displaySearchInfo && this.zeroResultsInfo) {
-                    $('li#search-info').remove();
+                } else if (!this.displaySearchInfo && this.zeroResultsInfo) {
+                    document.getElementById('search-info').remove();
                 }
 
-                if(this.before) {
+                if (this.before) {
                     this.before();
-                };
+                }
 
                 // Get the blogData for the full set, for onComplete
-                for (var i = 0; i < searchResult.length; i++) {
-                    var lunrref		= searchResult[i].ref;
-                    var postData  	= this.blogData[lunrref];
+                for (let i = 0; i < searchResult.length; i++) {
+                    const lunrref = searchResult[i].ref;
+                    const postData = this.blogData[lunrref];
                     if (postData) {
                         postData.ref = lunrref;
                         resultsData.push(postData);
@@ -529,46 +450,46 @@
                     }
                 }
                 // Get an array of IDs present in current results
-                var listItems = $('.gh-search-item');
-                var currentRefs = listItems
-                    .map(function(){
-                        return this.id.slice(3);
-                    }).get();
+                const listItems = document.getElementsByClassName('gh-search-item');
+                const currentRefs = Array.from(listItems).map(function (element) {
+                    return document.getElementById(element.id.slice(3)); // I bet this is completely wrong m(
+                });
                 if (currentRefs.length === 0) {
-                    for (var i=0,ilen=resultsData.length;i<ilen;i++) {
-                        results.append(this.format(this.result_template,resultsData[i]));
+                    for (let i = 0, ilen = resultsData.length; i < ilen; i++) {
+                        results.append(this.format(this.result_template, resultsData[i]));
                     }
                     settleIDs();
                 } else {
                     // Get an array of IDs present in searchResult
-                    var newRefs = [];
-                    for (var i=0,ilen=searchResult.length;i<ilen;i++) {
+                    const newRefs = [];
+                    for (let i = 0, ilen = searchResult.length; i < ilen; i++) {
                         newRefs.push(searchResult[i].ref)
                     }
                     // Get the Levenshtein steps needed to transform current into searchResult
-                    var levenshtein = new Levenshtein(currentRefs, newRefs);
-                    var steps = levenshtein.getSteps();
+                    const levenshtein = new Levenshtein(currentRefs, newRefs);
+                    const steps = levenshtein.getSteps();
                     // Apply the operations
                     updateSearchList.call(this, listItems, searchResult, steps);
                 }
                 // Tidy up
-                if(this.onComplete) {
+                if (this.onComplete) {
                     this.onComplete(resultsData);
-                };
+                }
             }.bind(this), 100);
         },
 
-        clear 			: function(){
-            $(this.results).empty();
-            this.target.val("");
+        clear: function () {
+            while (this.results.firstChild) {
+                this.results.removeChild(this.results.firstChild);
+            }
+            this.target.value = '';
         },
 
-        format 			: function (t, d) {
+        format: function (t, d) {
             return t.replace(/{{([^{}]*)}}/g, function (a, b) {
-                var r = d[b];
+                const r = d[b];
                 return typeof r === 'string' || typeof r === 'number' ? r : a;
             });
         }
     }
-
-})( jQuery );
+})();

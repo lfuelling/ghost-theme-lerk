@@ -1,18 +1,22 @@
+import './include/lunr.js';
+import './include/levenshtein.js';
 import './include/search.js'
 
-/* globals jQuery, document */
-(function ($, sr, undefined) {
+(function () {
     "use strict";
 
-    $("#search-field").ghostHunter({
-        results: "#results",
-        onComplete: function(results) {
-            $('#search-results-wrapper').addClass('active');
+    const searchField = document.getElementById('search-field');
+    const resultsDiv = document.getElementById('results');
+
+    window.ghostHunter(searchField, resultsDiv, {
+        onComplete: function (results) {
+            document.getElementById('search-results-wrapper').classList.add('active');
         }
     });
 
-    $('button#search-close').on('click', function (e) {
-        $('#search-results-wrapper').removeClass('active');
+    document.getElementById('search-close').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('search-results-wrapper').classList.remove('active');
+        document.getElementById('search-field').value = '';
     });
-
-})(jQuery, 'smartresize');
+})();
