@@ -9,6 +9,11 @@ header#header {
   color: #fff;
   margin-bottom: 2em;
 
+  .header-nav {
+    display: flex;
+    flex-direction: column;
+  }
+
   nav {
     padding: 0;
     background-position: center;
