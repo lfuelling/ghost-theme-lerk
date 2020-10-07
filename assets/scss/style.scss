@@ -29,6 +29,7 @@ body * {
 }
 
 #header .blog-header {
+    margin-bottom: 8px;
     display: flex;
     flex-direction: row;
     align-content: space-between;
@@ -180,6 +181,7 @@ body * {
     width: 100%;
     background: rgba(31, 31, 31, 0.75);
     padding: 0;
+    display: inline-block;
 }
 
 #header ul.taglist {
