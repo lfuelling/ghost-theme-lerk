@@ -2,6 +2,23 @@
    Buttons
    ========================================================================== */
 
+.button {
+  background: #989898;
+  border-radius: 0;
+  color: #fff;
+  font-size: 1em;
+  font-weight: 900;
+  padding: .4em 2em;
+  text-transform: uppercase;
+  text-align: center;
+  -webkit-transition: box-shadow .15s, background .5s;
+  transition: box-shadow .15s, background .5s;
+  text-decoration: none;
+  display: block;
+  border: none;
+  border-bottom: 5px solid #656565;
+  font-family: "Open Sans", sans-serif;
+}
 
 .back-button {
   -webkit-box-sizing: border-box;

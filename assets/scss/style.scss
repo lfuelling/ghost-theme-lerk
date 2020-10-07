@@ -2,603 +2,88 @@
 @import "fonts";
 @import "ghost";
 @import "prism";
-@import "screen";
+@import "normalize";
+@import "utilities";
 
 body {
-    background: #f5f5f5;
-}
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: #f5f5f5;
 
-body * {
+  * {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -o-box-sizing: border-box;
+  }
 }
 
-#header {
-    padding: 0;
-    background: #111;
-    color: #fff;
-    margin-bottom: 2em;
-}
+@import "partials/general";
+@import "partials/layout";
 
-#header nav {
-    padding: 0;
-    background-position: center;
-    background-size: cover;
-}
+@import "partials/pagination";
+@import "partials/animations";
 
-#header .blog-header {
-    margin-bottom: 8px;
-    display: flex;
-    flex-direction: row;
-    align-content: space-between;
-    justify-content: space-between;
-}
+@import "partials/media/lg";
+@import "partials/media/md";
+@import "partials/media/sm";
 
-#header #search-form {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-}
+@import "partials/components/box";
+@import "partials/components/footer";
+@import "partials/components/header/header";
+@import "partials/components/articles";
+@import "partials/components/sidebox";
+@import "partials/components/social-item";
+@import "partials/components/article";
+@import "partials/components/embed";
+@import "partials/components/post/subscribe";
 
-#header #search-form div {
-    display: flex;
-    flex-direction: row;
-}
-
-#header #search-form input,
-#header #search-form button {
-    height: fit-content;
-}
-
-#header #search-form input {
-    margin-right: 4px;
-    background-color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    font-family: "Open Sans", sans-serif;
-    font-weight: 100;
-}
-
-#header #search-form input[type="submit"] {
-    background-color: transparent;
-    border-color: white;
-    color: white;
-}
-
-#header #search-form input[type="submit"]:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-#header #search-results-wrapper {
-    display: none;
-
-    background-color: white;
-    border-radius: 5px;
-    margin-left: 16px;
-    margin-right: 16px;
-    margin-bottom: 16px;
-}
-
-#header #search-results-wrapper.active {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: end;
-    justify-content: space-between;
-}
-
-#header #search-results-wrapper > button {
-    background-color: transparent;
-    color: black;
-    border: none;
-    margin: 8px;
-}
-
-#header #search-results-wrapper ul#results {
-    list-style-type: none;
-    margin: 0;
-}
-
-#header #search-results-wrapper ul#results li#search-info {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-#header #search-results-wrapper ul#results li#search-info p {
-    display: block;
-    color: black;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
-    margin-top: 8px;
-}
-
-#header #search-results-wrapper ul#results p {
-    color: black;
-    font-size: 1.1rem;
-    line-height: 1.1rem;
-}
-
-#header #search-results-wrapper ul#results li:last-of-type {
-    margin-bottom: 8px;
-}
-
-#header #search-results-wrapper ul#results li a p {
-    color: black;
-    margin: 0;
-}
-
-#header #search-results-wrapper ul#results li a p.date {
-    font-size: 1rem;
-    line-height: 1rem;
-}
-
-#header #search-results-wrapper ul#results li a,
-#header #search-results-wrapper ul#results li a:hover,
-#header #search-results-wrapper ul#results li a:visited,
-#header #search-results-wrapper ul#results li a:active {
-    color: black;
-    text-decoration: none;
-}
-
-#header .blog-logo {
-    margin-right: 10px;
-    opacity: 1;
-}
-
-#header .blog-logo img {
-    height: 35px;
-}
-
-#header .blog-title {
-    font-family: "Open Sans", sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 30px;
-    text-decoration: none;
-    max-width: 1250px;
-    width: 100%;
-    padding: 1.5rem 1.8rem;
-    margin: 0 auto;
-}
-
-#header .blog-title a,
-#header .blog-title a:visited,
-#header .blog-title a:hover {
-    text-decoration: none;
-    color: #fff;
-    padding: 0;
-}
-
-#header .blog-title a small {
-    font-size: 50%;
-    margin-left: 16px;
-}
-
-#header .taglist-wrapper {
-    width: 100%;
-    background: rgba(31, 31, 31, 0.75);
-    padding: 0;
-    display: inline-block;
-}
-
-#header ul.taglist {
-    padding: 0 1em;
-    margin: 0 auto;
-    list-style: none;
-    max-width: 1250px;
-    float: left;
-}
-
-#header ul.taglist.secondary {
-    float: right;
-}
-
-#header ul.taglist li {
-    margin: 0;
-    padding: .2em 1.5em;
-    text-transform: uppercase;
-    font-family: "Open Sans", sans-serif;
-    color: #fff;
-    font-size: 12px;
-    float: left;
-    cursor: pointer;
-    transition: none;
-}
-
-#header ul.taglist li:hover {
-    background: #212121;
-    cursor: pointer;
-}
-
-#header ul.taglist li:hover a {
-    color: #fff;
-}
-
-#header ul.taglist li a {
-    text-decoration: none;
-    transition: none;
-    cursor: pointer;
-    color: #fff;
-}
-
-#header ul.taglist li a abbr {
-    border: none;
-    cursor: pointer;
-}
-
-#header ul.taglist li a i.fab,
-#header ul.taglist li a i.fas,
-#header ul.taglist li a i.far {
-    font-size: 23px;
-    vertical-align: sub; /* I have no idea why but this "centers" it vertically */
-    cursor: pointer;
-}
+@import "partials/pages/post";
+@import "partials/pages/author";
+@import "partials/pages/tag";
+@import "partials/pages/home";
 
 #content {
-    width: 100%;
-    max-width: 95%;
-    margin: 0 auto;
-    padding: 1em;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-}
+  width: 100%;
+  max-width: 95%;
+  margin: 0 auto;
+  padding: 1em;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
 
-@media screen and (max-width: 1500px) {
-    #content {
-        max-width: 1500px;
-    }
-}
-
-#articles, #article:not(.page) {
-    width: 67%;
-    margin-right: 3%;
-    float: left;
-}
-
-#articles .post {
-    width: 100%;
-    padding: 0 0 1em;
-    max-width: none;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    margin: 0 0 2em;
-}
-
-#articles .post .post-image {
-    width: 100%;
-    height: 300px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-#articles .post header,
-#articles .post .post-excerpt,
-#articles .post footer {
-    padding: 0 1.8rem;
-}
-
-#articles .post header {
-    padding-top: 1em;
-}
-
-#articles .post h2 {
-    color: #4A4A4A;
-}
-
-#articles .post:hover h2 {
-    color: #111;
-}
-
-#articles .post a,
-#articles .post a:visited {
-    text-decoration: none;
+  flex: 1 0 auto;
 }
 
 #sidebar {
-    width: 30%;
-    float: left;
-}
+  width: 30%;
+  float: left;
 
-#sidebar button {
+  button {
     display: block;
     width: 100%;
     margin: 1em 0;
     padding: .5em 0;
-}
+  }
 
-#sidebar .articles-related .box {
+  .articles-related .box {
     margin-bottom: 2em;
-}
-
-.box {
-    background: #fff;
-    padding: 1em;
-    box-shadow: 0 1px 2px rgba(50, 50, 50, 0.08);
-}
-
-.sidebox {
-    margin-bottom: 2em;
-    padding: 0;
-}
-
-.sidebox p {
-    margin: 0 0 1em;
-}
-
-.sidebox.latest-articles a {
-    text-decoration: none;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    display: block;
-    font-family: "Open Sans", sans-serif;
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
-    line-height: 1.3;
-}
-
-.sidebox.latest-articles .sidebox-content a:last-child {
-    padding-bottom: 0;
-    border: none;
-}
-
-.sidebox.latest-articles a .date {
-    font-size: .8em;
-    color: #9EABB3;
-    font-weight: normal;
-    margin-bottom: .6em;
-}
-
-.sidebox .sidebox-title {
-    background: #212121;
-    padding: .5em 1em;
-    color: #fff;
-    font-family: "Open Sans", sans-serif;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.sidebox.about .sidebox-content {
-    font-size: .9em;
-    line-height: 1.7;
-}
-
-.sidebox .sidebox-content {
-    padding: 1em;
-}
-
-.sidebox.social {
-    width: 100%;
-    text-align: center;
-}
-
-.sidebox.social ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebox.share .sidebox-content {
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: row;
-}
-
-.sidebox.share a {
-    font-size: 2.5rem;
-    display: inline-block;
-    margin: 1rem 1.6rem 1.6rem 0;
-    color: #BBC7CC;
-    text-decoration: none;
-}
-
-.sidebox.share a:hover {
-    color: #50585D;
-}
-
-.sidebox.share .sidebox-content {
-    text-align: center;
-}
-
-.social-item {
-    width: 25%;
-    float: left;
-    color: #fff;
-    text-decoration: none;
-    padding: .3em 0;
-    -webkit-transition: opacity .3s;
-    -o-transition: opacity .3s;
-    transition: opacity .3s;
-}
-
-.social-item:hover {
-    color: #fff;
-}
-
-.social-item.rss {
-    background: #f26522;
-}
-
-.social-item:hover {
-    opacity: .8;
-}
-
-.social-item.spt {
-    background: #1ed760;
-}
-
-.social-item.sc {
-    background: #f50;
-}
-
-.social-item.apple {
-    background: #000;
-}
-
-.social-item.home {
-    background: #ffd00e;
-}
-
-.social-item.github {
-    background: #333333;
-}
-
-.sidebox.social ul li {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-.box.is-link:hover {
-    box-shadow: 0 2px 4px rgba(50, 50, 50, 0.15);
-    cursor: pointer;
-}
-
-#article {
-    padding: 3em 0 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    margin-bottom: 2.5em;
-}
-
-#article.has-image {
-    padding-top: 0;
-}
-
-#article .image-wrapper {
-    width: 100%;
-    position: relative;
-    display: inline-block;
-    max-height: 350px;
-    overflow: hidden;
-}
-
-#article .image-wrapper .gradient {
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    opacity: .5;
-}
-
-#article img.post-image {
-    width: 100%;
-    height: auto;
-    margin-bottom: 50px;
-    display: block;
-}
-
-.button {
-    background: #989898;
-    border-radius: 0;
-    color: #fff;
-    font-size: 1em;
-    font-weight: 900;
-    padding: .4em 2em;
-    text-transform: uppercase;
-    text-align: center;
-    -webkit-transition: box-shadow .15s, background .5s;
-    transition: box-shadow .15s, background .5s;
-    text-decoration: none;
-    display: block;
-    border: none;
-    border-bottom: 5px solid #656565;
-    font-family: "Open Sans", sans-serif;
+  }
 }
 
 a.article-link,
 a.article-link:hover,
 a.article-link:visited {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-/*Tablet*/
-@media (max-width: 1023px) {
-    #sidebar, #articles, #article {
-        width: 100% !important;
-    }
-}
-
-@media (max-width: 770px) {
-    #header .blog-header {
-        flex-direction: column;
-    }
-
-    #header .blog-title {
-        display: flex;
-        justify-content: center;
-    }
-
-    #header #search-form div {
-        justify-content: center;
-        margin-bottom: 8px;
-    }
-}
-
-@media all and (max-width: 700px) {
-    #header ul.taglist.secondary {
-        display: none;
-    }
-
-    #header .taglist-wrapper ul#taglist-primary {
-        float: none;
-        clear: both;
-    }
-
-    #header .taglist-wrapper {
-        display: flex;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    #taglist-secondary, #taglist-primary {
-        display: none;
-    }
-}
-
-main.content.tag {
-    h1, p.subtitle {
-        text-align: center;
-    }
-
-    h1 {
-        font-family: "Open Sans",sans-serif;
-        font-weight: 700;
-    }
-
-    .tag-image {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 120px;
-        height: 120px;
-        padding: 3px;
-        margin: 0 auto;
-        box-shadow: none;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        display: block;
-        border-radius: 100%;
-        overflow: hidden;
-        background: #fff;
-        z-index: 2;
-    }
-
-    .tag-image .img {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center center;
-        border-radius: 100%;
-    }
-}
+/* ==========================================================================
+   End of file. Animations should be the last thing here. Do not add stuff
+   below this point, or it will probably fuck everything up.
+   ========================================================================== */

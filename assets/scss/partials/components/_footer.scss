@@ -3,9 +3,11 @@
    ========================================================================== */
 
 .site-footer {
+  flex-shrink: 0;
+  width: 100%;
   position: relative;
-  margin: 6rem 0 0 0;
-  padding: 0.5rem 15px;
+  margin: 8px 0 0 0;
+  padding: 0.5rem 3rem;
   border-top: #EBF2F6 1px solid;
   font-family: "Open Sans", sans-serif;
   font-size: 1rem;

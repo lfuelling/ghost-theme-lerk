@@ -2,6 +2,12 @@
    Media Queries - Smaller than 500px
    ========================================================================== */
 
+@media (max-width: 480px) {
+  #taglist-secondary, #taglist-primary {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 500px) {
 
   .main-header {

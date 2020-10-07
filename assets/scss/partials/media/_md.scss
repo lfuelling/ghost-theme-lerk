@@ -2,6 +2,38 @@
    Media Queries - Smaller than 900px
    ========================================================================== */
 
+@media (max-width: 770px) {
+  #header .blog-header {
+    flex-direction: column;
+  }
+
+  #header .blog-title {
+    display: flex;
+    justify-content: center;
+  }
+
+  #header #search-form div {
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+}
+
+@media all and (max-width: 700px) {
+  #header ul.taglist.secondary {
+    display: none;
+  }
+
+  #header .taglist-wrapper ul#taglist-primary {
+    float: none;
+    clear: both;
+  }
+
+  #header .taglist-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 @media only screen and (max-width: 900px) {
 
   .main-nav {

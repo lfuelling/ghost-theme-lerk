@@ -1,3 +1,43 @@
 /* ==========================================================================
    Tag Page
    ========================================================================== */
+
+main.content.tag {
+  h1, p.subtitle {
+    text-align: center;
+  }
+
+  h1 {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+  }
+
+  .tag-image {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 120px;
+    height: 120px;
+    padding: 3px;
+    margin: 0 auto;
+    box-shadow: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    border-radius: 100%;
+    overflow: hidden;
+    background: #fff;
+    z-index: 2;
+  }
+
+  .tag-image .img {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 100%;
+  }
+}

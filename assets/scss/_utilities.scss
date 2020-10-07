@@ -20,8 +20,8 @@
 /* Hides shit */
 .hidden {
   text-indent: -9999px;
-  visibility: hidden;
-  display: none;
+  visibility: hidden !important;
+  display: none !important;
 }
 
 /* Creates a responsive wrapper that makes our content scale nicely */

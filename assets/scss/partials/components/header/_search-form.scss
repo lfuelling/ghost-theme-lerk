@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Search Form
+   ========================================================================== */
+
+#search-form {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  margin-right: 8px;
+
+  input,
+  button {
+    height: fit-content;
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+  }
+
+  input {
+    margin-right: 4px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 100;
+
+    &[type="submit"] {
+      background-color: transparent;
+      border-color: white;
+      color: white;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+#search-results-wrapper {
+  display: none;
+
+  background-color: white;
+  border-radius: 5px;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+
+  &.active {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: end;
+    justify-content: space-between;
+  }
+
+  & > button {
+    background-color: transparent;
+    color: black;
+    border: none;
+    margin: 8px;
+    cursor: pointer;
+  }
+
+  ul#results {
+    list-style-type: none;
+    margin: 0;
+
+    & > p {
+      color: black;
+      font-size: 1.1rem;
+      line-height: 1.1rem;
+    }
+
+    li {
+
+      a,
+      a:hover,
+      a:visited,
+      a:active {
+        color: black;
+        text-decoration: none;
+      }
+
+      &:last-of-type {
+        margin-bottom: 8px;
+      }
+
+      &#search-info {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        p {
+          display: block;
+          color: black;
+          font-size: 1.4rem;
+          line-height: 1.4rem;
+          margin-top: 8px;
+        }
+      }
+
+      a p {
+        color: black;
+        margin: 0;
+
+        &.date {
+          font-size: 1rem;
+          line-height: 1rem;
+        }
+      }
+    }
+  }
+}
