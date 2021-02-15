@@ -7,7 +7,6 @@ const cleanCSS = require('gulp-clean-css');
 const zip = require('gulp-zip');
 const jsImport = require('gulp-js-import-file');
 
-
 function transpileAndMinifySass() {
     return src('assets/scss/style.scss')
         .pipe(sass().on('error', sass.logError))
