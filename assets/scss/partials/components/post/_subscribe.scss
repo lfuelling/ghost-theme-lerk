@@ -1,0 +1,75 @@
+/* The subscribe icon on the footer */
+.subscribe {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  margin-left: -15px;
+  border: #EBF2F6 1px solid;
+  text-align: center;
+  line-height: 2.4rem;
+  border-radius: 50px;
+  background: #FFF;
+  transition: box-shadow 0.5s;
+
+  /* The RSS icon, inserted via icon font */
+  &:before {
+    color: #D2DEE3;
+    font-size: 10px;
+    position: absolute;
+    top: 2px;
+    left: 9px;
+    font-weight: 700;
+    transition: color 0.5s ease;
+  }
+
+  /* Add a box shadow to on hover */
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.05) 0 0 0 3px;
+    transition: box-shadow 0.25s;
+    &:before {
+      color: #50585D;
+    }
+
+    /* On hover, show the tooltip! */
+    .tooltip {
+      opacity: 1;
+      top: -33px;
+    }
+  }
+
+  /* CSS tooltip saying "Subscribe!" - initially hidden */
+  .tooltip {
+    opacity: 0;
+    display: block;
+    width: 53px;
+    padding: 4px 8px 5px 8px;
+    position: absolute;
+    top: -23px;
+    left: -21px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1em;
+    text-align: center;
+    background: #50585D;
+    border-radius: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease, top 0.3s ease;
+
+    /* The little chiclet arrow under the tooltip, pointing down */
+    &:after {
+      content: " ";
+      border-width: 5px 5px 0 5px;
+      border-style: solid;
+      border-color: #50585D transparent;
+      display: block;
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      margin-left: -5px;
+      z-index: 220;
+      width: 0;
+    }
+  }
+}

@@ -1,0 +1,70 @@
+/* ==========================================================================
+   Pagination - Tools to let you flick between pages
+   ========================================================================== */
+
+/* The main wrapper for our pagination links */
+.pagination {
+  position: relative;
+  width: 100%;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.3rem;
+  color: #4A4A4A;
+  text-align: center;
+  margin: 0 auto 2em;
+  font-weight: bold;
+}
+
+.pagination a {
+  color: #4A4A4A;
+  transition: all 0.2s ease;
+}
+
+/* Push the previous/next links out to the left/right */
+.older-posts,
+.newer-posts {
+  position: absolute;
+  display: inline-block;
+  padding: 0 15px;
+  border: #4A4A4A 1px solid;
+  text-decoration: none;
+  transition: border ease 0.3s;
+}
+
+.older-posts {
+  right: 0;
+}
+
+.page-number {
+  display: inline-block;
+  padding: 2px 0;
+  min-width: 100px;
+}
+
+.newer-posts {
+  left: 0;
+}
+
+.older-posts:hover,
+.newer-posts:hover {
+  color: #111;
+  border-color: #111;
+}
+
+.extra-pagination {
+  display: none;
+  border-bottom: #EBF2F6 1px solid;
+}
+
+.extra-pagination .pagination {
+  width: auto;
+}
+
+/* On page2+ make all the headers smaller */
+.paged .main-header {
+  max-height: 30%;
+}
+
+/* On page2+ show extra pagination controls at the top of post list */
+.paged .extra-pagination {
+  display: block;
+}

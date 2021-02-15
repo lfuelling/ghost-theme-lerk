@@ -1,0 +1,119 @@
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+header#header {
+  width: 100%;
+  padding: 0;
+  background: #111;
+  color: #fff;
+  margin-bottom: 2em;
+
+  .header-nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav {
+    padding: 0;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .blog-header {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-between;
+  }
+
+  @import "search-form";
+
+  .blog-logo {
+    margin-right: 10px;
+    opacity: 1;
+
+    img {
+      height: 35px;
+    }
+  }
+
+  .blog-title {
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 30px;
+    text-decoration: none;
+    max-width: 1250px;
+    width: 100%;
+    padding: 1.5rem 1.8rem;
+    margin: 0 auto;
+
+    a,
+    a:visited,
+    a:hover {
+      text-decoration: none;
+      color: #fff;
+      padding: 0;
+    }
+
+    a small {
+      font-size: 50%;
+      margin-left: 16px;
+    }
+  }
+
+  .taglist-wrapper {
+    width: 100%;
+    background: rgba(31, 31, 31, 0.75);
+    padding: 0;
+    display: inline-block;
+
+    ul.taglist {
+      padding: 0 1em;
+      margin: 0 auto;
+      list-style: none;
+      max-width: 1250px;
+      float: left;
+      &.secondary {
+        float: right;
+      }
+      li {
+        margin: 0;
+        padding: .2em 1.5em;
+        text-transform: uppercase;
+        font-family: "Open Sans", sans-serif;
+        color: #fff;
+        font-size: 12px;
+        float: left;
+        cursor: pointer;
+        transition: none;
+        &:hover {
+          background: #212121;
+          cursor: pointer;
+          a {
+            color: #fff;
+          }
+        }
+        a {
+          text-decoration: none;
+          transition: none;
+          cursor: pointer;
+          color: #fff;
+          abbr {
+            border: none;
+            cursor: pointer;
+          }
+          i.fab,
+          i.fas,
+          i.far {
+            font-size: 23px;
+            vertical-align: sub; /* I have no idea why but this "centers" it vertically */
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

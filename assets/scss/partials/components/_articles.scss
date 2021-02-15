@@ -1,0 +1,42 @@
+#articles, #article:not(.page) {
+  width: 67%;
+  margin-right: 3%;
+  float: left;
+}
+
+#articles {
+  .post {
+    width: 100%;
+    padding: 0 0 1em;
+    max-width: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    margin: 0 0 2em;
+    .post-image {
+      width: 100%;
+      height: 300px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    header,
+    .post-excerpt,
+    footer {
+      padding: 0 1.8rem;
+    }
+    header {
+      padding-top: 1em;
+    }
+    h2 {
+      color: #4A4A4A;
+    }
+    &:hover h2 {
+      color: #111;
+    }
+    a,
+    a:visited {
+      text-decoration: none;
+    }
+  }
+}

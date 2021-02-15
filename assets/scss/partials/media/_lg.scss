@@ -1,0 +1,15 @@
+/* ==========================================================================
+   Media Queries - Greater than 900px
+   ========================================================================== */
+
+@media screen and (max-width: 1500px) {
+  #content {
+    max-width: 1500px;
+  }
+}
+
+@media (max-width: 1023px) {
+  #sidebar, #articles, #article {
+    width: 100% !important;
+  }
+}
