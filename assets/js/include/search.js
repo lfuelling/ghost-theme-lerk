@@ -33,11 +33,11 @@
      * @property {boolean} displaySearchInfo - Enable or disable the search info
      * @property {boolean} zeroResultsInfo - Enable or disable the search info when there are no results
      * @property {boolean} includebodysearch - Toggle if the full post body should be searched
-     * @property {function} before - Not really sure what it's supposed to do yet
-     * @property {function} onComplete - Callback for search completion
-     * @property {function} item_preprocessor - Callback for implementing a metadata preprocessor
-     * @property {function} indexing_start - Callback for implementing something when indexing starts
-     * @property {function} indexing_end - Callback for implementing something when indexing ends
+     * @property {function|undefined} before - Not really sure what it's supposed to do yet
+     * @property {function|undefined} onComplete - Callback for search completion
+     * @property {function|undefined} item_preprocessor - Callback for implementing a metadata preprocessor
+     * @property {function|undefined} indexing_start - Callback for implementing something when indexing starts
+     * @property {function|undefined} indexing_end - Callback for implementing something when indexing ends
      */
 
     /**
@@ -45,20 +45,20 @@
      * @type {GhostHunterOptions}
      */
     window.ghostHunter.defaults = {
+        result_template: "<li class='gh-search-item' id='gh-{{ref}}'><a href='{{link}}'><h6>{{title}}</h6><p class='date'>{{pubDate}}</p></a></li>",
+        info_template: "<li id='search-info'><p>{{amount}} posts found!</p></li>",
+        subpath: "",
         resultsData: false,
         onPageLoad: false,
         onKeyUp: false,
-        result_template: "<li class='gh-search-item' id='gh-{{ref}}'><a href='{{link}}'><h6>{{title}}</h6><p class='date'>{{pubDate}}</p></a></li>",
-        info_template: "<li id='search-info'><p>{{amount}} posts found!</p></li>",
         displaySearchInfo: false,
         zeroResultsInfo: true,
+        includebodysearch: true,
         before: undefined,
         onComplete: undefined,
-        subpath: "",
         item_preprocessor: undefined,
-        indexing_start: false,
-        indexing_end: false,
-        includebodysearch: true
+        indexing_start: undefined,
+        indexing_end: undefined
     };
 
     const prettyDate = function (date) {
@@ -259,9 +259,10 @@
 
                 window.setTimeout(miam, 1);
             } else {
-                target.focus(function () {
+                target.addEventListener('focus', () => {
                     that.loadAPI();
                 });
+                target.focus();
             }
 
             target.form.addEventListener('submit', function (e) {
@@ -275,11 +276,11 @@
                 // will save data to history (even when autocomplete="false"), which
                 // is an intrusive headache, particularly on mobile.
                 target.addEventListener('keydown', function (event) {
-                    if (event.which === 13) {
+                    if (event.key === 'Enter') {
                         return false;
                     }
                 });
-                target.addEventListener('keyup', function (event) {
+                target.addEventListener('keyup', function (_) {
                     that.find(target.value);
                 });
             }
@@ -299,7 +300,7 @@
                     this.blogData = localStorage.getItem(("ghost_" + subpathKey + "_blogData"));
                     this.latestPost = localStorage.getItem(("ghost_" + subpathKey + "_latestPost"));
                     if (this.latestPost && this.index && this.blogData) {
-                        this.latestPost = this.latestPost;
+                        //this.latestPost = this.latestPost;
                         this.index = lunr.Index.load(JSON.parse(this.index));
                         this.blogData = JSON.parse(this.blogData);
                         this.isInit = true;
