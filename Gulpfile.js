@@ -5,7 +5,7 @@ const minify = require('gulp-minify');
 const fs = require('fs');
 const cleanCSS = require('gulp-clean-css');
 const zip = require('gulp-zip');
-
+const jsImport = require('gulp-js-import-file');
 
 function transpileAndMinifySass() {
     return src('assets/scss/style.scss')
@@ -16,6 +16,11 @@ function transpileAndMinifySass() {
 
 function minifyJs() {
     return src(['assets/js/*.js'])
+        .pipe(jsImport({
+            hideConsole: true,
+            importStack: true,
+            es6import: true
+        }))
         .pipe(minify({
             noSource: true,
             ext: {

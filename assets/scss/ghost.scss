@@ -12,13 +12,13 @@
     display: flex;
     flex-direction: column;
     margin: 1.5em auto;
-    max-width: 1040px;
+    max-width: 100%;
     width: 100vw;
 }
 
 .kg-gallery-row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -27,14 +27,6 @@
     margin: 0;
     width: 100%;
     height: 100%;
-}
-
-.kg-gallery-row:not(:first-of-type) {
-    margin: 0.75em 0 0 0;
-}
-
-.kg-gallery-image:not(:first-of-type) {
-    margin: 0 0 0 0.75em;
 }
 
 .kg-bookmark-card {
