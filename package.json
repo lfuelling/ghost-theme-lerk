@@ -29,6 +29,6 @@
     "gulp-sass": "^4.1.0",
     "gulp-zip": "^5.0.2",
     "sass": "^1.26.9",
-    "yargs-parser": ">=5.0.0-security.0"
+    "yargs-parser": ">=13.1.2"
   }
 }
