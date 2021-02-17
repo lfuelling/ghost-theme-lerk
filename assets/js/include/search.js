@@ -14,10 +14,8 @@
     window.ghostHunter = function (searchField, results, options) {
         //Here we use jQuery's extend to set default values if they weren't set by the user
         const opts = Object.assign(window.ghostHunter.defaults, options);
-        if (opts.results) {
-            ghostHunterFunctions.init(searchField, results, opts);
-            return ghostHunterFunctions;
-        }
+        ghostHunterFunctions.init(searchField, results, opts);
+        return ghostHunterFunctions;
     };
 
     /**
@@ -79,9 +77,9 @@
     const settleIDs = function () {
         const items = document.getElementsByClassName('gh-search-item');
         for (let i = 0; i < items.length; i++) {
-            const oldAttr = this.getAttribute('id');
+            const oldAttr = items[i].getAttribute('id');
             const newAttr = oldAttr.replace(/^new-/, "");
-            this.setAttribute('id', newAttr);
+            items[i].setAttribute('id', newAttr);
         }
     };
 
@@ -100,8 +98,9 @@
                 const lunrref = apiData[step[2] - 1].ref;
                 const postData = this.blogData[lunrref];
                 const html = this.format(this.result_template, postData);
+                const htmlNode = document.createRange().createContextualFragment(html);
                 if (step[0] === "substitute") {
-                    listItems.item(step[1] - 1).replaceWith(html);
+                    listItems.item(step[1] - 1).replaceWith(htmlNode);
                 } else if (step[0] === "insert") {
                     let pos;
                     if (step[1] === 0) {
@@ -109,7 +108,7 @@
                     } else {
                         pos = (step[1] - 1)
                     }
-                    listItems.item(pos).after(html);
+                    listItems.item(pos).after(htmlNode);
                 }
             }
         }
@@ -157,7 +156,6 @@
                             this.field('pubDate');
                             this.field('tag');
                             idxSrc.forEach(function (arrayItem) {
-                                // console.log("start indexing an item: " + arrayItem.id);
                                 // Track the latest value of updated_at,  to stash in localStorage
                                 const itemDate = new Date(arrayItem.updated_at).getTime();
                                 const recordedDate = new Date(me.latestPost).getTime();
@@ -197,7 +195,6 @@
                                 if (me.item_preprocessor) {
                                     Object.assign(me.blogData[arrayItem.id], me.item_preprocessor(arrayItem));
                                 }
-                                // console.log("done indexing the item");
                             }, this);
                         });
                         try {
@@ -267,6 +264,7 @@
 
             target.form.addEventListener('submit', function (e) {
                 e.preventDefault();
+                e.stopPropagation();
                 that.find(target.value);
             });
 
@@ -341,7 +339,6 @@
                 xhr.open('GET', url, true);
                 xhr.send(null);
             } else {
-                // console.log('ghostHunter: this.isInit recheck is false');
                 grabAndIndex.call(this)
             }
         },
@@ -432,7 +429,10 @@
                         results.appendChild(this.format(this.info_template, {"amount": searchResult.length}));
                     }
                 } else if (!this.displaySearchInfo && this.zeroResultsInfo) {
-                    document.getElementById('search-info').remove();
+                    let searchInfo = document.getElementById('search-info');
+                    if(searchInfo) {
+                        searchInfo.parentElement.removeChild(searchInfo);
+                    }
                 }
 
                 if (this.before) {
@@ -457,7 +457,9 @@
                 });
                 if (currentRefs.length === 0) {
                     for (let i = 0, ilen = resultsData.length; i < ilen; i++) {
-                        results.append(this.format(this.result_template, resultsData[i]));
+                        const html = this.format(this.result_template, resultsData[i]);
+                        const htmlNode = document.createRange().createContextualFragment(html);
+                        results.append(htmlNode);
                     }
                     settleIDs();
                 } else {
