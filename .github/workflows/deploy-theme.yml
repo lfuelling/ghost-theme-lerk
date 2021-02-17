@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: '12'
       - name: Build Theme
-        uses: mikeal/npx@1.0.0
+        uses: mikeal/npx@master
         with:
           args: "gulp build" 
       - name: Deploy Ghost Theme
