@@ -9,16 +9,18 @@
     } else {
         root.Levenshtein = factory(root);
     }
-}(this, function(root){
+}(this, function(_){
 
-    function forEach( array, fn ) { var i, length
+    function forEach( array, fn ) {
+        let i, length;
         i = -1
         length = array.length
         while ( ++i < length )
             fn( array[ i ], i, array )
     }
 
-    function map( array, fn ) { var result
+    function map( array, fn ) {
+        let result;
         result = Array( array.length )
         forEach( array, function ( val, i, array ) {
             result.push( fn( val, i, array ) )
@@ -45,7 +47,7 @@
 
     // Levenshtein distance
     function Levenshtein( str_m, str_n ) {
-        var previous, current, matrix, getElem
+        let previous, current, matrix, getElem;
         // Set to string or array mode
         if (typeof str_m === "string" && typeof str_n === "string") {
             getElem = getChar;
@@ -58,23 +60,27 @@
         matrix = this._matrix = []
 
         // Sanity checks
-        if ( str_m == str_n )
+        if ( str_m === str_n )
             return this.distance = 0
-        else if ( str_m == '' )
+        else if ( str_m === '' )
             return this.distance = str_n.length
-        else if ( str_n == '' )
+        else if ( str_n === '' )
             return this.distance = str_m.length
         else {
             // Danger Will Robinson
             previous = [ 0 ]
-            forEach( str_m, function( v, i ) { i++, previous[ i ] = i } )
+            current = []
+            forEach( str_m, function( v, i ) {
+                i++;
+                previous[ i ] = i
+            } )
 
             matrix[0] = previous
             forEach( str_n, function( n_val, n_idx ) {
                 current = [ ++n_idx ]
                 forEach( str_m, function( m_val, m_idx ) {
                     m_idx++
-                    if ( getElem(str_m, m_idx - 1) == getElem(str_n, n_idx - 1) )
+                    if ( getElem(str_m, m_idx - 1) === getElem(str_n, n_idx - 1) )
                         current[ m_idx ] = previous[ m_idx - 1 ]
                     else
                         current[ m_idx ] = Math.min
@@ -91,7 +97,8 @@
         }
     }
 
-    Levenshtein.prototype.toString = Levenshtein.prototype.inspect = function inspect ( no_print ) { var matrix, max, buff, sep, rows
+    Levenshtein.prototype.toString = Levenshtein.prototype.inspect = function inspect (_) {
+        let matrix, max, buff, sep, rows;
         matrix = this.getMatrix()
         max = reduce( matrix,function( m, o ) {
             return Math.max( m, reduce( o, Math.max, 0 ) )
@@ -103,7 +110,8 @@
             sep[ sep.length ] = Array( buff.length + 1 ).join( '-' )
         sep = sep.join( '-+' ) + '-'
 
-        rows = map( matrix, function( row ) { var cells
+        rows = map( matrix, function( row ) {
+            let cells;
             cells = map( row, function( cell ) {
                 return ( buff + cell ).slice( - buff.length )
             })
@@ -115,7 +123,7 @@
 
     // steps to get from string 1 to string 2
     Levenshtein.prototype.getSteps = function()     {
-        var steps, matrix, x, y, u, l, d, min
+        let steps, matrix, x, y, u, l, d, min;
         steps = []
         matrix = this.getMatrix()
         x = matrix.length - 1
