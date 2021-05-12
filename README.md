@@ -10,7 +10,9 @@ A [ghost](https://ghost.org/) theme based on [ghost-wbkd](https://github.com/wbk
 
 #### Nav Links
 
-There are a few hardcoded links at `partials/header.hbs:27`, those should be replaced in your setup.
+There are a few hardcoded links at `partials/social-links.hbs`, those should be replaced in your setup.
+
+You can use the [FontAwesome icon reference](https://fontawesome.com/icons) for which icons are available.
 
 #### Search
 
