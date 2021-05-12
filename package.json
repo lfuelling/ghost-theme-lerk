@@ -1,7 +1,7 @@
 {
   "name": "ghost-theme-lerk",
   "description": "Ghost theme for lerks.blog.",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "keywords": [
     "ghost-theme",
     "blog"
@@ -10,7 +10,8 @@
     "posts_per_page": 7
   },
   "engines": {
-    "ghost-api": "v3"
+    "ghost": ">=4.0.0",
+    "ghost-api": "v4"
   },
   "license": "WTFPL",
   "author": {
