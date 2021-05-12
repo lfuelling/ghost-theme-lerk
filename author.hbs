@@ -2,37 +2,53 @@
 {{! The tag above means - insert everything in this file into the {body} of the default.hbs template }}
 
 {{! The big featured header }}
-
 {{> "header"}}
 
+{{! The main content area on the author page }}
 {{! Everything inside the #author tags pulls data from the author }}
-{{#author}}
-    <section class="author-profile inner">
-        {{#if profile_image}}
-        <figure class="author-image">
-            <div class="img" style="background-image: url({{img_url profile_image}})"><span class="hidden">{{name}}'s Picture</span></div>
-        </figure>
-        {{/if}}
-        <h1 class="author-title">{{name}}</h1>
-        <h2 class="author-bio">{{bio}}</h2>
-        <div class="author-meta">
-            {{#if location}}<span class="author-location icon-location">{{location}}</span>{{/if}}
-            {{#if website}}<span class="author-link fa fa-link"><a href="{{website}}">{{website}}</a></span>{{/if}}
-            <span class="author-stats"><i class="far fa-bar-chart"></i> {{plural ../pagination.total empty='No posts' singular='% post' plural='% posts'}}</span>
-        </div>
-    </section>
-{{/author}}
-
-{{! The main content area on the homepage }}
 <main id="content" class="content clearfix" role="main">
 
-
     <div id="articles">
-      {{> "loop"}}
+        {{> "loop"}}
     </div>
 
-
     <div id="sidebar">
-      {{> "sidebar"}}
+        {{#author}}
+            <div class="box sidebox author-sidebox">
+                <div class="sidebox-title">
+                    {{#if profile_image}}
+                        <div class="author-image">
+                            <img src="{{img_url profile_image size="small"}}" alt="{{name}}'s Picture"/>
+                        </div>
+                    {{/if}}
+                    <span>{{name}}</span>
+                </div>
+                <div class="sidebox-content">
+                    <p>{{bio}}</p>
+                    <ul>
+                        {{#if location}}
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{location}}</span>
+                            </li>
+                        {{/if}}
+                        {{#if website}}
+                            <li>
+                                <i class="fas fa-link"></i>
+                                <a href="{{website}}">{{website}}</a>
+                            </li>
+                        {{/if}}
+                        <li>
+                            <i class="fas fa-chart-bar"></i>
+                            <span>{{plural ../pagination.total empty='No posts'
+                                           singular='% post'
+                                           plural='% posts'}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {{/author}}
+
+        {{> "sidebar"}}
     </div>
 </main>

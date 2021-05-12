@@ -11,6 +11,7 @@
   -webkit-transition: opacity .3s;
   -o-transition: opacity .3s;
   transition: opacity .3s;
+
   &:hover {
     color: #fff;
     opacity: .8;
@@ -19,18 +20,23 @@
   &.rss {
     background: #f26522;
   }
+
   &.spt {
     background: #1ed760;
   }
+
   &.sc {
     background: #f50;
   }
+
   &.apple {
     background: #000;
   }
+
   &.home {
     background: #ffd00e;
   }
+
   &.github {
     background: #333333;
   }

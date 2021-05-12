@@ -35,37 +35,12 @@
 }
 
 @media only screen and (max-width: 900px) {
-
-  .main-nav {
-    padding: 15px;
-  }
-
   blockquote {
     margin-left: 0;
   }
 
-  .main-header {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    height: auto;
-    min-height: 240px;
-    height: 40%;
-    padding: 15% 0;
-  }
-
-  .scroll-down,
-  .home-template .main-header:after {
+  .scroll-down {
     display: none;
-  }
-
-  .paged .main-header {
-    min-height: 180px;
-    padding: 10% 0;
-  }
-
-  .blog-logo img {
-    padding: 4px 0;
   }
 
   .page-title {
@@ -80,6 +55,11 @@
 
   .post {
     font-size: 0.95em
+  }
+
+  .author-meta span {
+    display: block;
+    margin: 1.5rem 0;
   }
 
   body:not(.post-template) .post-title {
@@ -118,42 +98,4 @@
   h6 {
     font-size: 1.8rem;
   }
-
-  .author-profile {
-    padding-bottom: 4rem;
-  }
-
-  .author-profile {
-    .author-bio {
-      font-size: 1.6rem;
-    }
-
-    .author-meta span {
-      font-size: 1.6rem;
-    }
-  }
-
-  .author-meta span {
-    display: block;
-    margin: 1.5rem 0;
-  }
-
-  .post-head.main-header {
-    height: 40%;
-  }
-
-  .tag-head.main-header,
-  .author-head.main-header {
-    height: 30%;
-  }
-
-  .no-cover.post-head.main-header {
-    height: 55px;
-    padding: 0;
-  }
-
-  .no-cover.author-head.main-header {
-    padding: 0;
-  }
-
 }

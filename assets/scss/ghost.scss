@@ -1,136 +1,136 @@
 .kg-image-card,
 .kg-gallery-card {
-    margin: 0 0 1.5em;
+  margin: 0 0 1.5em;
 }
 
 .kg-image-card figcaption,
 .kg-gallery-card figcaption {
-    margin: -1.0em 0 1.5em;
+  margin: -1.0em 0 1.5em;
 }
 
 .kg-gallery-container {
-    display: flex;
-    flex-direction: column;
-    margin: 1.5em auto;
-    max-width: 100%;
-    width: 100vw;
+  display: flex;
+  flex-direction: column;
+  margin: 1.5em auto;
+  max-width: 100%;
+  width: 100vw;
 }
 
 .kg-gallery-row {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .kg-gallery-image img {
-    display: block;
-    margin: 0;
-    width: 100%;
-    height: 100%;
+  display: block;
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .kg-bookmark-card {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .kg-bookmark-container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row-reverse;
-    color: currentColor;
-    font-family: inherit;
-    text-decoration: none;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  color: currentColor;
+  font-family: inherit;
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .kg-bookmark-container:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .kg-bookmark-content {
-    flex-basis: 0;
-    flex-grow: 999;
-    padding: 20px;
-    order: 1;
+  flex-basis: 0;
+  flex-grow: 999;
+  padding: 20px;
+  order: 1;
 }
 
 .kg-bookmark-title {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .kg-bookmark-metadata,
 .kg-bookmark-description {
-    margin-top: .5em;
+  margin-top: .5em;
 }
 
 .kg-bookmark-metadata {
-    align-items: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kg-bookmark-description {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .kg-bookmark-icon {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    vertical-align: text-bottom;
-    margin-right: .5em;
-    margin-bottom: .05em;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: text-bottom;
+  margin-right: .5em;
+  margin-bottom: .05em;
 }
 
 .kg-bookmark-thumbnail {
-    display: flex;
-    flex-basis: 24rem;
-    flex-grow: 1;
+  display: flex;
+  flex-basis: 24rem;
+  flex-grow: 1;
 }
 
 .kg-bookmark-thumbnail img {
-    max-width: 100%;
-    height: auto;
-    vertical-align: bottom;
-    object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  object-fit: cover;
 }
 
 .kg-bookmark-author {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .kg-bookmark-publisher::before {
-    content: "•";
-    margin: 0 .5em;
+  content: "•";
+  margin: 0 .5em;
 }
 
 .fluid-width-video-wrapper {
-    position: relative;
-    overflow: hidden;
-    padding-top: 56.25%;
+  position: relative;
+  overflow: hidden;
+  padding-top: 56.25%;
 }
 
 .fluid-width-video-wrapper iframe,
 .fluid-width-video-wrapper object,
 .fluid-width-video-wrapper embed {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .kg-width-wide img {
-    max-width: 85%;
+  max-width: 85%;
 }
 
 .kg-width-full img {
-    max-width: 100%;
+  max-width: 100%;
 }

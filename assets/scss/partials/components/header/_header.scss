@@ -30,15 +30,6 @@ header#header {
 
   @import "search-form";
 
-  .blog-logo {
-    margin-right: 10px;
-    opacity: 1;
-
-    img {
-      height: 35px;
-    }
-  }
-
   .blog-title {
     font-family: "Open Sans", sans-serif;
     text-transform: uppercase;
@@ -76,9 +67,11 @@ header#header {
       list-style: none;
       max-width: 1250px;
       float: left;
+
       &.secondary {
         float: right;
       }
+
       li {
         margin: 0;
         padding: .2em 1.5em;
@@ -89,22 +82,27 @@ header#header {
         float: left;
         cursor: pointer;
         transition: none;
+
         &:hover {
           background: #212121;
           cursor: pointer;
+
           a {
             color: #fff;
           }
         }
+
         a {
           text-decoration: none;
           transition: none;
           cursor: pointer;
           color: #fff;
+
           abbr {
             border: none;
             cursor: pointer;
           }
+
           i.fab,
           i.fas,
           i.far {
