@@ -145,6 +145,10 @@
   border-bottom: #EBF2F6 1px solid;
   word-break: break-word;
   hyphens: auto;
+
+  code, pre {
+    white-space: nowrap;
+  }
 }
 
 body:not(.post-template) .post-title {
