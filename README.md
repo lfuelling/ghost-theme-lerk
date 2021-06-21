@@ -1,6 +1,8 @@
 # lerks-blog
 A [ghost](https://ghost.org/) theme based on [ghost-wbkd](https://github.com/wbkd/ghost-wbkd).
 
+**This repository is archived because I'm currently writing [my own blogging software](https://github.com/meowBlog/meowBlog). This theme will not be updated for Ghost releases >4!**
+
 ### Install
 
 1. Clone the repo
